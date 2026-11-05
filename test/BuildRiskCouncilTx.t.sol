@@ -3,7 +3,8 @@ pragma solidity 0.8.28;
 
 import {Test} from "forge-std/Test.sol";
 import {AaveV4Ethereum} from "aave-address-book/AaveV4Ethereum.sol";
-import {BuildRiskCouncilTx, IRiskStewardUpdates} from "../script/BuildRiskCouncilTx.s.sol";
+import {BuildRiskCouncilTx} from "../script/BuildRiskCouncilTx.s.sol";
+import {RiskCouncilPayload, IRiskStewardUpdates} from "../src/RiskCouncilPayload.sol";
 
 contract BuildRiskCouncilTxTest is Test {
     BuildRiskCouncilTx internal producer = new BuildRiskCouncilTx();
@@ -13,14 +14,14 @@ contract BuildRiskCouncilTxTest is Test {
     }
 
     function test_CallsEqualTheExecutedNonce447Calldata() external view {
-        bytes[] memory data = producer.calls();
+        bytes[] memory data = RiskCouncilPayload.calls();
         assertEq(data.length, 2);
         assertEq(data[0], _fixture("nonce-447-call-0.hex"), "updateHubAssetIRs");
         assertEq(data[1], _fixture("nonce-447-call-1.hex"), "updateHubSpokeCaps");
     }
 
     function test_SelectorsAreTheStewardEntrypoints() external view {
-        bytes[] memory data = producer.calls();
+        bytes[] memory data = RiskCouncilPayload.calls();
         assertEq(bytes4(data[0]), IRiskStewardUpdates.updateHubAssetIRs.selector);
         assertEq(bytes4(data[1]), IRiskStewardUpdates.updateHubSpokeCaps.selector);
         assertEq(bytes4(data[0]), bytes4(0x2cd0fd70));
@@ -33,7 +34,7 @@ contract BuildRiskCouncilTxTest is Test {
         assertEq(vm.parseJsonAddress(json, ".meta.createdFromSafeAddress"), AaveV4Ethereum.RISK_COUNCIL);
         assertEq(vm.parseJsonAddress(json, ".transactions[0].to"), AaveV4Ethereum.RISK_STEWARD);
         assertEq(vm.parseJsonAddress(json, ".transactions[1].to"), AaveV4Ethereum.RISK_STEWARD);
-        assertEq(vm.parseJsonBytes(json, ".transactions[0].data"), producer.calls()[0]);
-        assertEq(vm.parseJsonBytes(json, ".transactions[1].data"), producer.calls()[1]);
+        assertEq(vm.parseJsonBytes(json, ".transactions[0].data"), RiskCouncilPayload.calls()[0]);
+        assertEq(vm.parseJsonBytes(json, ".transactions[1].data"), RiskCouncilPayload.calls()[1]);
     }
 }
