@@ -1,0 +1,16 @@
+[profile.default]
+src = "src"
+script = "script"
+test = "test"
+out = "forge-out"
+libs = ["lib"]
+solc = "0.8.28"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+
+# The producer script writes its Safe tx JSON here. Nothing else may be written.
+fs_permissions = [
+  { access = "read-write", path = "./out" },
+  { access = "read", path = "./test/fixtures" },
+]
