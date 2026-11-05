@@ -1,6 +1,6 @@
 # forge-attest-example-aave-v4-steward
 
-A demo of [`forge-attest`](https://github.com/crossecute/forge-attest/tree/c5760b798e68901c60192e22c500b63a5a996bd3) on a real
+A demo of [`forge-attest`](https://github.com/crossecute/forge-attest/tree/9e76385ac2f96f171ceb9391cf9e8298e2d408cf) on a real
 Aave v4 transaction. [`script/BuildRiskCouncilTx.s.sol`](script/BuildRiskCouncilTx.s.sol)
 rebuilds the Risk Council transaction executed at Safe nonce 447
 ([`0x47c7…0fA8`](https://app.safe.global/home?safe=eth:0x47c71dFEB55Ebaa431Ae3fbF99Ea50e0D3d30fA8),
@@ -44,7 +44,7 @@ The script writes a Safe{Wallet} Transaction Builder file with the Safe in
 
 ```bash
 git clone https://github.com/crossecute/forge-attest.git ../forge-attest
-git -C ../forge-attest checkout --detach c5760b798e68901c60192e22c500b63a5a996bd3 # main after v1.3.0; use the next release tag when cut
+git -C ../forge-attest checkout --detach 9e76385ac2f96f171ceb9391cf9e8298e2d408cf # main after v1.3.0 (#56); use the next release tag when cut
 ../forge-attest/attest.sh --config attest.toml --require-live
 ./scripts/check-executed.sh
 ```
@@ -75,6 +75,8 @@ MAINNET_RPC_URL=https://eth.drpc.org ../forge-attest/attest.sh --config attest.c
 The captured request folds to the same canonical transaction as the Transaction Builder
 file above (`ef44057e…5d10`) and to the executed `safeTxHash`. Notes:
 
+- It needs a forge-attest that includes the redirect options safe-utils sends
+  (`-L --max-redirs 3 --proto =https`, crossecute/forge-attest#56). Earlier commits reject them.
 - It needs an archive RPC for the fork block. The public `eth.drpc.org` endpoint served it
   when I tried; use your own for anything that matters.
 - `PRIVATE_KEY = "1"` is a public test key for the script's local signing step. Never use an

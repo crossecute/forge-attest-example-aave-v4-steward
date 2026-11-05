@@ -1,4 +1,4 @@
-# forge-attest claims for main at c5760b7 (v1.3.0 plus the preimage-suffix approval). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
+# forge-attest claims for main at 9e76385 (v1.3.0 plus the preimage-suffix approval and the capture redirect options). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
 # Child Safe 0x2B99…B1cA (threshold 2 of 5). Its executed approveHash at nonce 18 is the plain call, which is the default child_approval.
 producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
 producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
