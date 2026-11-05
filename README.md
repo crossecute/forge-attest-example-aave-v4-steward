@@ -45,18 +45,19 @@ The script writes a Safe{Wallet} Transaction Builder file with the Safe in
 ```bash
 git clone https://github.com/crossecute/forge-attest.git ../forge-attest
 git -C ../forge-attest checkout --detach 09b0c9b69f1b779ffb5938899775f93d2e423528 # v1.3.0
-../forge-attest/attest.sh --config attest.toml
+../forge-attest/attest.sh --config attest.toml --require-live
 ./scripts/check-executed.sh
 ```
 
 `attest.sh` re-runs the pinned producer commit and checks the raw file hash, the
 canonical hash, and the `safeTxHash` with `cast` and with Solidity. The pinned
-`safeTxHash` is `0x0ea9a8fe…8e4`, the hash of the executed transaction.
-[`scripts/check-executed.sh`](scripts/check-executed.sh) reads that nonce from the Safe
-Transaction Service and confirms the pin equals the executed hash. The claims leave
-`safe_network` blank because nonce 447 has already executed, so there is no queued
-transaction for the live check to compare. For a pending transaction, set
-`safe_network = "ethereum"` and run with `--require-live`.
+`safeTxHash` is `0x0ea9a8fe…8e4`, the hash of the executed transaction. The claims set
+`safe_network = "ethereum"`, so the live check also compares the hash with the
+transaction the Safe Transaction Service holds at nonce 447. That transaction has
+already executed; for a pending one the same setting compares it with the queued
+transaction. Add `--require-live` to fail instead of skipping when the service cannot
+be reached. [`scripts/check-executed.sh`](scripts/check-executed.sh) additionally
+confirms that the transaction executed successfully and prints its block.
 
 ## The Safe is nested
 
