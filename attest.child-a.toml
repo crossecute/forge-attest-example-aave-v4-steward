@@ -1,5 +1,5 @@
-# forge-attest v1.3.0 claims. The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
-# Child Safe 0xb291…Afef (threshold 1 of 3). The approveHash it executed at nonce 205 carried extra calldata, so its safeTxHash (0xcce0f737…) differs from the plain call pinned here.
+# forge-attest claims for main at c5760b7 (v1.3.0 plus the preimage-suffix approval). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
+# Child Safe 0xb291…Afef (threshold 1 of 3). Its approveHash at nonce 205 was followed by the parent transaction, which child_approval = "preimage-suffix" rebuilds.
 producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
 producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
 producer_setup = "git submodule update --init --recursive"
@@ -24,4 +24,6 @@ expected_canonical_sha256 = "ef44057e9ceb6bd572b849d9fa56cd111882290ff1c50c5c289
 expected_safe_tx_hash = "0x0ea9a8fed74bc267e88a5de190ca88a3c63b5963784f50176bfd0f4fb523f8e4"
 child_safe = "0xb291232F480F41c75802C4a60F1D2AC03404Afef"
 child_nonce = "205"
-expected_child_safe_tx_hash = "0x923b5ac925dd0c5384893336eb7f9f7408d59a776eb8881bb0d6883d2eb2db9c"
+child_approval = "preimage-suffix"
+child_network = "ethereum"
+expected_child_safe_tx_hash = "0xcce0f737311aecf1b4a54acae4d57231d60c435e764e3cbc924a9a4a15f707cb"

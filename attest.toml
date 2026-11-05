@@ -1,5 +1,5 @@
-# forge-attest v1.3.0 claims. The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
-# Child Safe 0x2B99…B1cA (threshold 2 of 5). Its executed approveHash at nonce 18 is the plain call forge-attest builds.
+# forge-attest claims for main at c5760b7 (v1.3.0 plus the preimage-suffix approval). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
+# Child Safe 0x2B99…B1cA (threshold 2 of 5). Its executed approveHash at nonce 18 is the plain call, which is the default child_approval.
 producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
 producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
 producer_setup = "git submodule update --init --recursive"
@@ -24,4 +24,5 @@ expected_canonical_sha256 = "ef44057e9ceb6bd572b849d9fa56cd111882290ff1c50c5c289
 expected_safe_tx_hash = "0x0ea9a8fed74bc267e88a5de190ca88a3c63b5963784f50176bfd0f4fb523f8e4"
 child_safe = "0x2B99790c35a401be873FA7Eb514D9220736BB1cA"
 child_nonce = "18"
+child_network = "ethereum"
 expected_child_safe_tx_hash = "0xf7ebe808a50aaca719180a6ef26daf719421527be4fd25800158f337bb0d52e5"

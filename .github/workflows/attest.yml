@@ -26,6 +26,6 @@ jobs:
         config: [attest.toml, attest.child-a.toml]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: crossecute/forge-attest@09b0c9b69f1b779ffb5938899775f93d2e423528 # v1.3.0
+      - uses: crossecute/forge-attest@c5760b798e68901c60192e22c500b63a5a996bd3 # main after v1.3.0 (#55); move to the next release tag
         with:
           config: ${{ matrix.config }}

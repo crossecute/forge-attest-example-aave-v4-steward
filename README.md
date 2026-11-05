@@ -1,6 +1,6 @@
 # forge-attest-example-aave-v4-steward
 
-A demo of [`forge-attest`](https://github.com/crossecute/forge-attest/tree/v1.3.0) on a real
+A demo of [`forge-attest`](https://github.com/crossecute/forge-attest/tree/c5760b798e68901c60192e22c500b63a5a996bd3) on a real
 Aave v4 transaction. [`script/BuildRiskCouncilTx.s.sol`](script/BuildRiskCouncilTx.s.sol)
 rebuilds the Risk Council transaction executed at Safe nonce 447
 ([`0x47c7…0fA8`](https://app.safe.global/home?safe=eth:0x47c71dFEB55Ebaa431Ae3fbF99Ea50e0D3d30fA8),
@@ -40,11 +40,11 @@ forge script script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx && cat out/risk-
 The script writes a Safe{Wallet} Transaction Builder file with the Safe in
 `meta.createdFromSafeAddress`. It has no timestamp, so the file is byte-stable.
 
-## Verify with forge-attest v1.3.0
+## Verify with forge-attest
 
 ```bash
 git clone https://github.com/crossecute/forge-attest.git ../forge-attest
-git -C ../forge-attest checkout --detach 09b0c9b69f1b779ffb5938899775f93d2e423528 # v1.3.0
+git -C ../forge-attest checkout --detach c5760b798e68901c60192e22c500b63a5a996bd3 # main after v1.3.0; use the next release tag when cut
 ../forge-attest/attest.sh --config attest.toml --require-live
 ./scripts/check-executed.sh
 ```
@@ -65,18 +65,20 @@ Both owners of the Risk Council are Safes. Each approves with a transaction of i
 `approveHash(parentHash)` on the Risk Council, and its owners sign that. `forge-attest`
 builds each approval from the parent transaction, so the child's signers can see which
 hash they are approving. One claim names one child, and two claims cannot share an output
-path, so each child has its own config:
+path, so each child has its own config. Each config also sets `child_network`, so the
+approval is compared with the child's own transaction in the Safe service:
 
-| Config | Child Safe | Child nonce | Child safeTxHash | Matches the executed child tx |
+| Config | Child Safe | Child nonce | `child_approval` | Child safeTxHash |
 |---|---|---|---|---|
-| [`attest.toml`](attest.toml) | `0x2B99…B1cA` (2 of 5) | 18 | `0xf7ebe808…52e5` | Yes |
-| [`attest.child-a.toml`](attest.child-a.toml) | `0xb291…Afef` (1 of 3) | 205 | `0x923b5ac9…db9c` | No |
+| [`attest.toml`](attest.toml) | `0x2B99…B1cA` (2 of 5) | 18 | `plain` | `0xf7ebe808…52e5` |
+| [`attest.child-a.toml`](attest.child-a.toml) | `0xb291…Afef` (1 of 3) | 205 | `preimage-suffix` | `0xcce0f737…07cb` |
 
-The second child's executed approval is not the plain call. Its calldata is
-`approveHash(parentHash)` followed by about 2.8 KB of extra data that contains the parent
-transaction (the Risk Council, nonce 447 and the MultiSend). Its executed `safeTxHash` is
-`0xcce0f737…07cb`. `forge-attest` builds the plain call, so a child that signs the
-suffixed form would not be covered by that pin. I did not decode the suffix layout.
+Both hashes are the executed child transactions. The first child sent the plain call. The
+second sent `approveHash(parentHash)` followed by the parent transaction, as `0xfb4e87b0`
+and an ABI-encoded copy of the Risk Council transaction (2,788 extra bytes here), so its
+owners could read what they approved. `child_approval = "preimage-suffix"` rebuilds that
+form from the parent, so a suffix that described a different transaction would not match.
+I do not know which tool writes the suffix.
 
 An approval is only valid while the Risk Council nonce equals the one in the claim.
 
