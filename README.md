@@ -59,6 +59,31 @@ transaction. Add `--require-live` to fail instead of skipping when the service c
 be reached. [`scripts/check-executed.sh`](scripts/check-executed.sh) additionally
 confirms that the transaction executed successfully and prints its block.
 
+## Capture Aave's own proposal flow
+
+`aave-v4-risk-stewards` proposes through [`safe-utils`](https://github.com/Recon-Fuzz/safe-utils)
+(`_safe.proposeTransactions`, pinned at v0.0.22). [`script/ProposeRiskCouncilTx.s.sol`](script/ProposeRiskCouncilTx.s.sol)
+does the same for this payload: one MultiSend batch, signed locally and posted to the Safe
+Transaction Service. [`attest.capture.toml`](attest.capture.toml) uses forge-attest's
+`capture = "safe-utils"` mode to run it unchanged on a fork one block before nonce 447
+executed, intercept the request it would have posted, and attest that:
+
+```bash
+MAINNET_RPC_URL=https://eth.drpc.org ../forge-attest/attest.sh --config attest.capture.toml --require-live
+```
+
+The captured request folds to the same canonical transaction as the Transaction Builder
+file above (`ef44057e…5d10`) and to the executed `safeTxHash`. Notes:
+
+- It needs an archive RPC for the fork block. The public `eth.drpc.org` endpoint served it
+  when I tried; use your own for anything that matters.
+- `PRIVATE_KEY = "1"` is a public test key for the script's local signing step. Never use an
+  owner key. The signature in the request is not an approval.
+- The request is stored outside the clone, so the script writes no file and the capture
+  needs no change to the producer.
+- Aave's own script reads `SIGNER_ADDRESS` and signs with a hardware wallet. This demo script
+  signs with the test key because capture forbids a device.
+
 ## The Safe is nested
 
 Both owners of the Risk Council are Safes. Each approves with a transaction of its own,
