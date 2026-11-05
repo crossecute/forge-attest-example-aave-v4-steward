@@ -1,0 +1,31 @@
+name: Attest
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+      - run: git -C lib/aave-address-book submodule update --init lib/aave-v4
+      - uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # v1.9.2
+      - run: forge test
+
+  attest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: [attest.toml, attest.child-a.toml]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: crossecute/forge-attest@09b0c9b69f1b779ffb5938899775f93d2e423528 # v1.3.0
+        with:
+          config: ${{ matrix.config }}

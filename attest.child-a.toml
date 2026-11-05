@@ -1,0 +1,26 @@
+# forge-attest v1.3.0 claims, with live queue checks disabled: nonce 447 has already executed.
+# Child Safe 0xb291…Afef (threshold 1 of 3). The approveHash it executed at nonce 205 carried extra calldata, so its safeTxHash (0xcce0f737…) differs from the plain call pinned here.
+producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
+producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
+producer_setup = "git submodule update --init --recursive"
+
+[[run]]
+script = "script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx"
+
+[run.defaults]
+input_format = "tx-builder"
+safe_version = "1.3.0"
+
+[[run.claim]]
+output_path = "out/risk-council-tx.json"
+chain_id = "1"
+safe_address = "0x47c71dFEB55Ebaa431Ae3fbF99Ea50e0D3d30fA8"
+safe_nonce = "447"
+# The script writes no timestamp, so the raw file is byte-stable and can be pinned.
+expected_output_sha256 = "0db0706c76fd3810aee6c2f6c668f7c1b845176d0c849a8fe5ecf5c119847212"
+expected_canonical_sha256 = "ef44057e9ceb6bd572b849d9fa56cd111882290ff1c50c5c289eb14deae15d10"
+# The safeTxHash of the executed transaction at nonce 447.
+expected_safe_tx_hash = "0x0ea9a8fed74bc267e88a5de190ca88a3c63b5963784f50176bfd0f4fb523f8e4"
+child_safe = "0xb291232F480F41c75802C4a60F1D2AC03404Afef"
+child_nonce = "205"
+expected_child_safe_tx_hash = "0x923b5ac925dd0c5384893336eb7f9f7408d59a776eb8881bb0d6883d2eb2db9c"
