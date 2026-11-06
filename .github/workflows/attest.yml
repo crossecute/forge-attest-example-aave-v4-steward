@@ -26,7 +26,7 @@ jobs:
         config: [attest.toml, attest.child-a.toml]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: crossecute/forge-attest@9e76385ac2f96f171ceb9391cf9e8298e2d408cf # main after v1.3.0 (#56); move to the next release tag
+      - uses: crossecute/forge-attest@9e76385ac2f96f171ceb9391cf9e8298e2d408cf # v1.4.0
         with:
           config: ${{ matrix.config }}
 
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: crossecute/forge-attest@9e76385ac2f96f171ceb9391cf9e8298e2d408cf # main after v1.3.0 (#56); move to the next release tag
+      - uses: crossecute/forge-attest@9e76385ac2f96f171ceb9391cf9e8298e2d408cf # v1.4.0
         env:
           MAINNET_RPC_URL: https://eth.drpc.org
         with:
