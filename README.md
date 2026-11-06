@@ -44,7 +44,7 @@ The script writes a Safe{Wallet} Transaction Builder file with the Safe in
 
 ```bash
 git clone https://github.com/crossecute/forge-attest.git ../forge-attest
-git -C ../forge-attest checkout --detach 9e76385ac2f96f171ceb9391cf9e8298e2d408cf # main after v1.3.0 (#56); use the next release tag when cut
+git -C ../forge-attest checkout --detach 9e76385ac2f96f171ceb9391cf9e8298e2d408cf # v1.4.0
 ../forge-attest/attest.sh --config attest.toml --require-live
 ./scripts/check-executed.sh
 ```
@@ -75,8 +75,8 @@ MAINNET_RPC_URL=https://eth.drpc.org ../forge-attest/attest.sh --config attest.c
 The captured request folds to the same canonical transaction as the Transaction Builder
 file above (`ef44057e…5d10`) and to the executed `safeTxHash`. Notes:
 
-- It needs a forge-attest that includes the redirect options safe-utils sends
-  (`-L --max-redirs 3 --proto =https`, crossecute/forge-attest#56). Earlier commits reject them.
+- It needs forge-attest v1.4.0 or later, which accepts the redirect options safe-utils sends
+  (`-L --max-redirs 3 --proto =https`, crossecute/forge-attest#56). v1.3.0 rejects them.
 - It needs an archive RPC for the fork block. The public `eth.drpc.org` endpoint served it
   when I tried; use your own for anything that matters.
 - `PRIVATE_KEY = "1"` is a public test key for the script's local signing step. Never use an
