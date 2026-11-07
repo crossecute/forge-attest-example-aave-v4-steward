@@ -1,18 +1,12 @@
-# forge-attest claims for v1.4.0 (9e76385). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
-# Child Safe 0x2B99…B1cA (threshold 2 of 5). Its executed approveHash at nonce 18 is the plain call, which is the default child_approval.
+# Risk Council nonce 447 and the plain approval at child nonce 18.
 producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
 producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
-producer_setup = "git submodule update --init --recursive"
+producer_setup = "git submodule update --init && git -C lib/aave-address-book submodule update --init lib/aave-v4"
+producer_script = "script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx"
 
-[[run]]
-script = "script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx"
-
-[run.defaults]
+output_path = "out/risk-council-tx.json"
 input_format = "tx-builder"
 safe_version = "1.3.0"
-
-[[run.claim]]
-output_path = "out/risk-council-tx.json"
 chain_id = "1"
 safe_address = "0x47c71dFEB55Ebaa431Ae3fbF99Ea50e0D3d30fA8"
 safe_nonce = "447"
