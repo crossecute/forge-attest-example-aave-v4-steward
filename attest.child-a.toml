@@ -1,18 +1,12 @@
-# forge-attest claims for main at 9e76385 (v1.3.0 plus the preimage-suffix approval and the capture redirect options). The live check compares the hash with the transaction the Safe service holds at nonce 447, which has executed.
-# Child Safe 0xb291…Afef (threshold 1 of 3). Its approveHash at nonce 205 was followed by the parent transaction, which child_approval = "preimage-suffix" rebuilds.
+# Risk Council nonce 447 and the approval with a parent transaction suffix at child nonce 205.
 producer_repo = "https://github.com/crossecute/forge-attest-example-aave-v4-steward"
 producer_commit = "77886cb0653f9cc64d0cb74ea5119f7d5a9e2c68"
-producer_setup = "git submodule update --init --recursive"
+producer_setup = "git submodule update --init && git -C lib/aave-address-book submodule update --init lib/aave-v4"
+producer_script = "script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx"
 
-[[run]]
-script = "script/BuildRiskCouncilTx.s.sol:BuildRiskCouncilTx"
-
-[run.defaults]
+output_path = "out/risk-council-tx.json"
 input_format = "tx-builder"
 safe_version = "1.3.0"
-
-[[run.claim]]
-output_path = "out/risk-council-tx.json"
 chain_id = "1"
 safe_address = "0x47c71dFEB55Ebaa431Ae3fbF99Ea50e0D3d30fA8"
 safe_nonce = "447"
