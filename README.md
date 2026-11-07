@@ -1,8 +1,28 @@
 # forge-attest-example-aave-v4-steward
 
-A demo of Forge Attest v1.4.0 using the Aave v4 Risk Council Safe on Ethereum
-at nonce 447. The demo reconstructs the transaction from its historical calldata
-and takes its addresses from `aave-address-book` at `b71495a`.
+## Gap in the public proposal flow
+
+The Aave v4 steward script simulates the proposed updates, can write a state
+diff, and uses `safe-utils` to sign and post a MultiSend batch to the Safe
+Transaction Service. The public flow leaves reviewers to verify independently
+that the full transaction at the intended Safe and nonce matches the source
+they reviewed. [Aave's published steward script](https://github.com/aave-dao/aave-v4-risk-stewards/blob/082760efc4e9d8b414d668fb80b3ec544b91b605/scripts/RiskStewardsBase.s.sol)
+
+One of the child Safe approvals for Risk Council nonce 447 carries only the
+parent hash, so its calldata gives signers no parameter values to review.
+
+## What Forge Attest adds
+
+Forge Attest reruns a pinned producer and derives the complete Safe transaction
+hash. With `--require-live`, it requires a match against the service record for
+the intended Safe and nonce.
+It also derives each child approval from the verified parent, so child signers
+can check both the parent transaction and their own approval hash. The demo
+uses v1.4.0 to reproduce Ethereum nonce 447 from historical calldata and verify
+both child approvals. It also intercepts the demo's `safe-utils` request
+locally and verifies that it yields the same parent hash.
+
+The demo takes its addresses from `aave-address-book` at `b71495a`.
 
 ## Run it
 
