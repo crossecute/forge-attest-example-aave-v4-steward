@@ -25,12 +25,6 @@ check the exact hash they are about to sign. Treat any AI agent's review of
 the queued transaction or RPC dependency as potentially compromised. The
 signer performs these checks without AI assistance.
 
-A fork gives the script a fixed starting state, including for a proposal
-still awaiting approval. The capture claim relies on its RPC provider for
-that state. A provider can return incorrect state even at a pinned block,
-so a human reviewer must vet the provider and confirm the intended chain
-and fork block. [Forge Attest threat model](https://github.com/crossecute/forge-attest/blob/v1.4.0/README.md#threat-model)
-
 Forge Attest derives each child approval from the same parent transaction, so
 child signers can check both hashes. The demo uses v1.4.0 to reproduce Ethereum
 nonce 447 from historical calldata and verify both child approvals. It also
